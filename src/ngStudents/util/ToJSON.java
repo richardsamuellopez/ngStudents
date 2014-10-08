@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import java.sql.ResultSet;
 
+import org.owasp.esapi.ESAPI;
 
 public class ToJSON {
 
@@ -55,11 +56,11 @@ public class ToJSON {
                     }
                     else if(rsmd.getColumnType(i)==java.sql.Types.VARCHAR){
                    	 
-/*                   	 temp = rs.getString(column_name); //saving column data to temp variable
+                  	 temp = rs.getString(column_name); //saving column data to temp variable
                    	 temp = ESAPI.encoder().canonicalize(temp); //decoding data to base state
                    	 temp = ESAPI.encoder().encodeForHTML(temp); //encoding to be browser safe
                    	 obj.put(column_name, temp); //putting data into JSON object
-*/                   	 
+                   	 
                    	 //obj.put(column_name, rs.getString(column_name));
                    	 // /*Debug*/ System.out.println("ToJson: VARCHAR");
                     }
