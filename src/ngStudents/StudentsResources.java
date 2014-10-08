@@ -63,45 +63,52 @@ public class StudentsResources {
 		}finally{
 			if(conn != null)conn.close();
 		}
-		
+		System.out.println(rb);
+
 		return rb;
 	}
 	
-	@Path("{id}")
+	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStudent(@PathParam("id") int id) throws Exception{
 		
-		
+		System.out.println("THE STUDENT ID: "+id);
 		PreparedStatement query = null;
 		String returnString = null;
 		Connection conn = null;
 		ResultSet rs = null;
 		Response rb = null;
-
-		//query = "Select * From students";
 		
+		ToJSON converter = new ToJSON();
+		JSONArray json = new JSONArray();
+
 		try{
 			
 			conn = JDBCMySQLConnection.getConnection();
-			query = conn.prepareStatement("select * from students where id="+id);
+			query = conn.prepareStatement("select * from students where id=?");
+			
+			query.setInt(1, id);
+			
 			rs = query.executeQuery();
 	
-			ToJSON converter = new ToJSON();
-			JSONArray json = new JSONArray();
+			
 			
 			json = converter.toJSONArray(rs);
 			query.close();
 			
 			returnString = json.toString();
-			rb = Response.ok(returnString).build();
-			
+			System.out.println("QUERY COMPLETE");
 		}catch(Exception e){
 			e.printStackTrace();
+			return Response.status(500).entity("Server was not able to process your request").build();
 		}
 		finally{
 			if(conn != null) conn.close();
 		}
+		rb = Response.ok(returnString).build();
+
+		System.out.println(rb);
 		
 		return rb;
 	}

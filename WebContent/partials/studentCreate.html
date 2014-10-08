@@ -3,19 +3,19 @@
 
     <form novalidate="novalidate" class="form-horizontal">
         <div class="control-group">
-            <label class="control-label" for="inputFirstName">Name:</label>
+            <label class="control-label" for="inputName">Name:</label>
             <div class="controls">
                 <input type="text" id="inputName" ng-model="student.name"/>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputLastName">DOB:</label>
+            <label class="control-label" for="inputDOB">DOB:</label>
             <div class="controls">
-                <input type="text" id="inputDOB" ng-model="student.dob"/>
+                <input type="text" id="inputDOB" ng-model="student.dob" placeholder="yyyy-mm-dd"/>
             </div>
         </div>
         <div class="control-group">
-            <div class="controls">
+            <div class="controls" style="margin-top: 10px;">
                 <a ng-click="cancel()" class="btn btn-small">cancel</a>
               <!-- user-creation.html: -->
                 <a ng-click="createNewStudent()" class="btn btn-small btn-primary">Create New Student</a>

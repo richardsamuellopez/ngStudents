@@ -3,22 +3,23 @@
 
     <form novalidate="novalidate" class="form-horizontal">
         <div class="control-group">
-            <label class="control-label" for="inputFirstName">Name:</label>
+            <label class="control-label" for="inputName">Name:</label>
             <div class="controls">
                 <input type="text" id="inputName" ng-model="student.name"/>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputLastName">DOB:</label>
+            <label class="control-label" for="inputDOB">DOB:</label>
             <div class="controls">
-                <input type="text" id="inputDOB" ng-model="student.dob"/>
+                <input type="text" id="inputDOB" ng-model="student.dob" />
             </div>
         </div>
         <div class="control-group">
-            <div class="controls">
+        <input type="hidden" id="studentID" ng-model="student.id">
+            <div class="controls" style="margin-top: 10px;">
               <!-- userEdit.html: -->
-                <a ng-click="cancel()" class="btn btn-small">cancel</a>
-                <a ng-click="updateUser()" class="btn btn-small btn-primary">update user</a>
+                <a ng-click="cancel()" class="btn btn-small">Cancel</a>
+                <a ng-click="updateUser()" class="btn btn-small btn-primary">Save Student</a>
             </div>
         </div>
     </form>

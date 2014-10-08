@@ -1,83 +1,106 @@
 angular.module('ngStudentsApp.controllers', []).
-  controller('studentsController', function($scope, ngStudentsAPIservice, $location) {
-    $scope.nameFilter = null;
-    $scope.studentssList = [];
+controller('studentsController', function($scope, ngStudentsAPIservice, $location) {
+	$scope.nameFilter = null;
+	$scope.studentssList = [];
 
     //Filter students
     $scope.searchFilter = function (student) {
-        var keyword = new RegExp($scope.nameFilter, 'i');
-        return !$scope.nameFilter || keyword.test(student.name);
+    	var keyword = new RegExp($scope.nameFilter, 'i');
+    	return !$scope.nameFilter || keyword.test(student.name);
     };
     
     //Load the list of students
     ngStudentsAPIservice.getStudents().success(function (response) {
         //Dig into the respond to get the relevant data
     	$scope.studentsList = response;
+    	console.log("GET STUDENTS RESPONSE " +response);
         //$scope.studentsList = response.MRData.StandingsTable.StandingsLists[0].DriverStandings;
     }).error(function(response){
-    
     	console.log("ERROR");
     });
     
 
-    $scope.newPerson = null;
+    //Clicked on the Create Student button
     $scope.addStudent = function(){
     	$location.path('/studentCreate');
 
     };
+    
+    //Clicked on the Edit button
     $scope.editStudent = function(studentid){
     	$location.path('/studentEdit/'+studentid);
     }
     
+    //Clicked on the Delete button
     $scope.deleteStudent = function(studentid){
-    	ngStudentsAPIservice.deleteStudent(studentid).success(function(response){
-	        
-    		//Find a better way to reload the list
-    		 ngStudentsAPIservice.getStudents().success(function (response) {
-    		    	$scope.studentsList = response;
+    	if (confirm('Are you sure you want to delete this student?')) {
+    		ngStudentsAPIservice.deleteStudent(studentid).success(function(response){
+    			
+    			//Find a better way to reload the list
+    			ngStudentsAPIservice.getStudents().success(function (response) {
+    				$scope.studentsList = response;
     		    });
     		 
-    	}).error(function(response){
-    		console.log("DELETE ERROR");
-    	});
+    		}).error(function(response){
+    			console.log("DELETE ERROR");
+    		});
+    	}//End delete confirm
     };
 
-  }).
-  controller('studentController', function($scope, $routeParams, ngStudentsAPIservice, $location) {
-		$scope.id = $routeParams.id;
+}).
+controller('studentController', function($scope, $routeParams, ngStudentsAPIservice, $location) {
 
-		$scope.cancel = function(){
-	    	$location.path('/studentList');
-	    };
-	    $scope.editStudent = function(){
-	    	console.log("EDIT STUDENT");
-	    	ngStudnetsAPIService.editStudent.success(function(response){
-	    		console.log("EDIT STUDENT DONE");
-	    	}).error(function(response){
-	    		console.log("EDIT STUENT ERROR");
-	    	});
-	    };
+	$scope.id = $routeParams.id;
+	//Load one student for editing
+
+	$scope.student = null;
+	ngStudentsAPIservice.getStudent($scope.id).success(function (response) {
+
+		//Dig into the respond to get the relevant data
+		$scope.student = response[0];	
+		// This is from the tutorial do not understand all the additoanl info after response
+		//$scope.studentsList = response.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+	}).error(function(response){
+		console.log("ERROR");
+	});
+
+	//Clicked cancel	
+	$scope.cancel = function(){
+		$location.path('/studentList');
+	};
+	
+	//Clicked Save Student
+    $scope.editStudent = function(){
+    	console.log("EDIT STUDENT");
+    	ngStudnetsAPIService.editStudent.success(function(response){
+    		console.log("EDIT STUDENT DONE");
+    	}).error(function(response){
+    		console.log("EDIT STUENT ERROR");
+	    });
+    };
 		
-  }).
-  controller('createController', function($scope, ngStudentsAPIservice, $location){
+}).
+controller('createController', function($scope, ngStudentsAPIservice, $location){
 
-		$scope.cancel = function(){
-	    	$location.path('/studentList');
-	    };
+	//Clicked cancel
+	$scope.cancel = function(){
+		$location.path('/studentList');
+	};
 	  
-	  
-  $scope.newPerson = null;
+  $scope.newPerson = null;//Don't think this is needed
+  //Create new student
   $scope.createNewStudent = function(){
-  	console.log("ADD STUDENT");
-  	console.log($scope.student);
-  	var studentObj={name:$scope.student.name,dob:$scope.student.dob};
-  	ngStudentsAPIservice.addStudent($scope.student).success(function(response){
-  		console.log("NEW STUDENT ADDED: ");
-  		//Either go to the list page or clear values
-  		//$location.path('/studentList');
-  		$scope.student.name='';
-  		$scope.student.dob=''
-  		//If clearing values add a confirm message
+	  var studentObj={name:$scope.student.name,dob:$scope.student.dob};
+	  ngStudentsAPIservice.addStudent($scope.student).success(function(response){
+		  if(false){
+			  //Either go to the list page 
+			  $location.path('/studentList');
+		  }else{
+			  // Or 
+			  $scope.student.name='';
+			  $scope.student.dob=''
+			  //Add a successful creation message
+		  }
   	}).error(function(response){
   		console.log("ADD STUDENT ERROR");
   	});

@@ -3,6 +3,15 @@ angular.module('ngStudentsApp.services', []).
 
     var ngStudentsAPI = {};
 
+    ngStudentsAPI.getStudent = function(id) {
+    	console.log("GET STUDENT SERVICES.JS" + id);
+        return $http({
+          method: 'GET', 
+          url: 'http://localhost:8080/ngStudents/api/v1/students/'+id
+          //url: 'http://ergast.com/api/f1/2013/driverStandings.json?callback=JSON_CALLBACK'
+       });
+     }
+    
     ngStudentsAPI.getStudents = function() {
       return $http({
         method: 'GET', 
