@@ -1,9 +1,4 @@
-/*
-angular.module('ngStudentsApp', [
-  'ngStudentsApp.controllers',
-  'ngStudentsApp.services'
-]);
-*/
+'use strict';
 
 angular.module('ngStudentsApp', [
 	'ngStudentsApp.controllers',
@@ -16,4 +11,4 @@ config(['$routeProvider', function($routeProvider){
     when("/studentEdit/:id", {templateUrl: "partials/studentEdit.html", controller: "studentController"}).
     when("/studentCreate", {templateUrl: "partials/studentCreate.html", controller: "createController"}).
     otherwise({redirectTo: '/studentList'});
-}]);//createController studentController
+}]);

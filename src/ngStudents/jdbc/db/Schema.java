@@ -33,7 +33,7 @@ public class Schema{
 	public int deleteStudent(int id)throws Exception{
 		PreparedStatement query = null;
 		Connection conn = null;
-		//System.out.println("DELETE************");
+
 		try{
 			
 			conn = JDBCMySQLConnection.getConnection();
@@ -50,6 +50,5 @@ public class Schema{
 		
 		return 200;
 	}
-	
 	
 }

@@ -34,7 +34,7 @@ import ngStudents.jdbc.db.Schema;
 public class StudentsResources {
 
 	
-	// Return all students
+	// Return json of all students
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response returnAllStudents() throws Exception{
@@ -68,6 +68,7 @@ public class StudentsResources {
 		return rb;
 	}
 	
+	//Return json of student id passed in
 	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,8 +93,6 @@ public class StudentsResources {
 			
 			rs = query.executeQuery();
 	
-			
-			
 			json = converter.toJSONArray(rs);
 			query.close();
 			
@@ -113,6 +112,7 @@ public class StudentsResources {
 		return rb;
 	}
 	
+	//Create a new student
 	@POST
 	@Path("/add/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -121,14 +121,11 @@ public class StudentsResources {
 		System.out.println("incomingData: " + incomingData);
 
 		String returnString = null;
-		Connection conn = null;
-		PreparedStatement query = null;
 		
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = new JSONObject();
 		
 		Schema dbSchema = new Schema(); 
-		
 		
 		try{
 
@@ -137,65 +134,47 @@ public class StudentsResources {
 			
 			int http_code = dbSchema.addStudent(studentData.optString("name"),studentData.optString("dob"));
 			
-		if( http_code == 200 ) {
-			/*
-			 * The put method allows you to add data to a JSONObject.
-			 * The first parameter is the KEY (no spaces)
-			 * The second parameter is the Value
-			 */
-			jsonObject.put("HTTP_CODE", "200");
-			jsonObject.put("MSG", "Item has been entered successfully, Version 3");
-			/*
-			 * When you are dealing with JSONArrays, the put method is used to add
-			 * JSONObjects into JSONArray.
-			 */
-			returnString = jsonArray.put(jsonObject).toString();
-		} else {
-			return Response.status(500).entity("Unable to enter Item").build();
+			if( http_code == 200 ) {
+				/*
+				 * The put method allows you to add data to a JSONObject.
+				 * The first parameter is the KEY (no spaces)
+				 * The second parameter is the Value
+				 */
+				jsonObject.put("HTTP_CODE", "200");
+				jsonObject.put("MSG", "Item has been entered successfully, Version 3");
+				/*
+				 * When you are dealing with JSONArrays, the put method is used to add
+				 * JSONObjects into JSONArray.
+			 	*/
+				returnString = jsonArray.put(jsonObject).toString();
+			} else {
+				return Response.status(500).entity("Unable to enter Item").build();
+			}
+		
+			System.out.println( "returnString: " + returnString );
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+			return Response.status(500).entity("Server was not able to process your request").build();
 		}
-		
-		System.out.println( "returnString: " + returnString );
-		
-	} catch(Exception e) {
-		e.printStackTrace();
-		return Response.status(500).entity("Server was not able to process your request").build();
-	}
 	
-		
 		return Response.ok(returnString).build();
-
 	}
 
-	/*@PUT
-	@Path("update")
-	@Produces("text/html")
-	@Consumes("application/xml")
-	public String updateStudent() {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}*/
-
+	//Delete a student whose id is passed in
 	@DELETE
 	@Path("/delete/{id}")
 	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteStudent(@PathParam("id") int studentid, String incomingData)throws Exception {
-		System.out.println("incomingData: " + incomingData);
-System.out.println("student id: "+studentid);
-		//int studentId;
 		int http_code;
 		String returnString = null;
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = new JSONObject();
 		
 		Schema dbSchema = new Schema(); 
-		
-		
 
 		try{
-			//JSONObject studentsData = new JSONObject(incomingData);
-			
-			//studentId = studentsData.optInt("student_ID",0);
-			
 			http_code = dbSchema.deleteStudent(studentid);
 			
 			if(http_code==200){
@@ -214,9 +193,12 @@ System.out.println("student id: "+studentid);
 		return Response.ok(returnString).build();
 	}
 	
-	
-}
-
-class StudentEntry{
-	public String student_name;
+	//Update and existing student
+	@PUT
+	@Path("/update")
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateStudent(String incomingData)throws Exception  {
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}	
 }

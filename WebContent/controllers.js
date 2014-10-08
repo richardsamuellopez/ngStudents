@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ngStudentsApp.controllers', []).
 controller('studentsController', function($scope, ngStudentsAPIservice, $location) {
 	$scope.nameFilter = null;
@@ -13,7 +15,6 @@ controller('studentsController', function($scope, ngStudentsAPIservice, $locatio
     ngStudentsAPIservice.getStudents().success(function (response) {
         //Dig into the respond to get the relevant data
     	$scope.studentsList = response;
-    	console.log("GET STUDENTS RESPONSE " +response);
         //$scope.studentsList = response.MRData.StandingsTable.StandingsLists[0].DriverStandings;
     }).error(function(response){
     	console.log("ERROR");
@@ -70,12 +71,12 @@ controller('studentController', function($scope, $routeParams, ngStudentsAPIserv
 	};
 	
 	//Clicked Save Student
-    $scope.editStudent = function(){
+    $scope.updateStudent = function(){
     	console.log("EDIT STUDENT");
-    	ngStudnetsAPIService.editStudent.success(function(response){
+    	ngStudentsAPIservice.editStudent($scope.id).success(function(response){
     		console.log("EDIT STUDENT DONE");
     	}).error(function(response){
-    		console.log("EDIT STUENT ERROR");
+    		console.log("EDIT STUDENT ERROR");
 	    });
     };
 		
