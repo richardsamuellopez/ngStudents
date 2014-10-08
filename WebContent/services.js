@@ -11,10 +11,15 @@ angular.module('ngStudentsApp.services', []).
       });
     }
     
-    ngStudentsAPI.addStudent = function(){
+    ngStudentsAPI.addStudent = function(data){
     	console.log("ADD SERVICES.JS");
+    	console.log(data);
     	//var String data=null;
-    	return $http.post('http://localhost:8080/ngStudents/api/v1/students/add');
+    	return $http({
+    		method: 'POST',
+    		url: 'http://localhost:8080/ngStudents/api/v1/students/add/',
+    		data: data
+    	});
     }
     
     ngStudentsAPI.deleteStudent = function(id){
@@ -23,6 +28,10 @@ angular.module('ngStudentsApp.services', []).
     		method: 'DELETE',
     		url: 'http://localhost:8080/ngStudents/api/v1/students/delete/'+id
     	});
+    }
+    
+    ngStudentsAPI.editStudent = function(id){
+    	console.log("EDIT SERVICES.JS")
     }
     return ngStudentsAPI;
   });

@@ -105,32 +105,55 @@ public class StudentsResources {
 		
 		return rb;
 	}
-	@Path("/add")
+	
 	@POST
+	@Path("/add/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
 	public Response addStudent(String incomingData) throws Exception {
+		System.out.println("incomingData: " + incomingData);
 
 		String returnString = null;
 		Connection conn = null;
 		PreparedStatement query = null;
+		
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		
+		Schema dbSchema = new Schema(); 
+		
+		
 		try{
-			System.out.println("incomingData: " + incomingData);
 
-			ObjectMapper mapper = new ObjectMapper();  
-			//StudentEntry itemEntry = mapper.readValue(incomingData, ItemEntry.class);
+			JSONObject studentData = new JSONObject(incomingData);
+			System.out.println("jsonData: "+studentData.toString());
 			
-			conn = JDBCMySQLConnection.getConnection();
-			query = conn.prepareStatement("insert into students "+
-					"(name, dob) values('John Doe', '"+incomingData+"')");
-			query.executeUpdate();
-		}catch(Exception e){
-			e.printStackTrace();
+			int http_code = dbSchema.addStudent(studentData.optString("name"),studentData.optString("dob"));
 			
-		}finally{
-			if(conn != null)conn.close();
+		if( http_code == 200 ) {
+			/*
+			 * The put method allows you to add data to a JSONObject.
+			 * The first parameter is the KEY (no spaces)
+			 * The second parameter is the Value
+			 */
+			jsonObject.put("HTTP_CODE", "200");
+			jsonObject.put("MSG", "Item has been entered successfully, Version 3");
+			/*
+			 * When you are dealing with JSONArrays, the put method is used to add
+			 * JSONObjects into JSONArray.
+			 */
+			returnString = jsonArray.put(jsonObject).toString();
+		} else {
+			return Response.status(500).entity("Unable to enter Item").build();
 		}
 		
+		System.out.println( "returnString: " + returnString );
+		
+	} catch(Exception e) {
+		e.printStackTrace();
+		return Response.status(500).entity("Server was not able to process your request").build();
+	}
+	
 		
 		return Response.ok(returnString).build();
 
