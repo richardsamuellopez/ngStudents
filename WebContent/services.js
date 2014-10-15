@@ -36,11 +36,12 @@ angular.module('ngStudentsApp.services', []).
     	});
     }
     
-    ngStudentsAPI.editStudent = function(id){
+    ngStudentsAPI.editStudent = function(data){
     	console.log("EDIT SERVICES.JS")
     	return $http({
     		method: 'PUT',
-    		url: 'http://localhost:8080/ngStudents/api/v1/students/update/'+id
+    		url: 'http://localhost:8080/ngStudents/api/v1/students/update/',
+    		data: data
     	})
     }
     return ngStudentsAPI;

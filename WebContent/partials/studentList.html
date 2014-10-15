@@ -1,5 +1,15 @@
+<div id="confirm" class="modal hide">
+	<div class="modal-body">
+    	Are you sure?
+  	</div>
+  	<div class="modal-footer">
+    	<button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+    	<button type="button" data-dismiss="modal" class="btn">Cancel</button>
+  	</div>
+</div>
 <div class="container">
 	<div class="span6" ng-app="ngStudentsApp" ng-controller="studentsController">
+
 		<div class="span4">
 		<input type="text" ng-model="nameFilter" placeholder="Search..."/>
 		
@@ -23,11 +33,6 @@
   		</table>
   
 	</div>
-<!-- 	
-	<div ng-controller="MainCtrl">
-    <p>Hello {{name}}!</p>
-    <button confirmed-click="sayHi()" 
-    ng-confirm-click="Would you like to say hi?">Say hi to {{ name }}</button>
-  </div>
--->
 </div>
+
+

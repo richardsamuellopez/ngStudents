@@ -34,7 +34,13 @@ controller('studentsController', function($scope, ngStudentsAPIservice, $locatio
     
     //Clicked on the Delete button
     $scope.deleteStudent = function(studentid){
+    	
+//    	$('#confirm').modal({ backdrop: 'static', keyboard: false });
+        $('#confirm').modal('show');
     	if (confirm('Are you sure you want to delete this student?')) {
+    	
+    	
+
     		ngStudentsAPIservice.deleteStudent(studentid).success(function(response){
     			
     			//Find a better way to reload the list
@@ -73,7 +79,7 @@ controller('studentController', function($scope, $routeParams, ngStudentsAPIserv
 	//Clicked Save Student
     $scope.updateStudent = function(){
     	console.log("EDIT STUDENT");
-    	ngStudentsAPIservice.editStudent($scope.id).success(function(response){
+    	ngStudentsAPIservice.editStudent($scope.student).success(function(response){
     		console.log("EDIT STUDENT DONE");
     	}).error(function(response){
     		console.log("EDIT STUDENT ERROR");

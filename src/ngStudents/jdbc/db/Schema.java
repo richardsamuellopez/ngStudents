@@ -50,5 +50,29 @@ public class Schema{
 		
 		return 200;
 	}
+
+	public int editStudent(Integer Student_ID, String Student_name, String Student_DOB)throws Exception{
+		
+		PreparedStatement query = null;
+		Connection conn = null;
+		
+		try{
+			conn = JDBCMySQLConnection.getConnection();
+			query = conn.prepareStatement("update students set "+
+						"name = ?, "+
+						"dob =? "+
+						"where id=?");
+			query.setString(1, Student_name);
+			query.setString(2, Student_DOB);
+			query.setInt(3, Student_ID);
+			query.executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+			return 500;
+		}finally{
+			if(conn != null) conn.close();
+		}
+		return 200;
+	}
 	
 }

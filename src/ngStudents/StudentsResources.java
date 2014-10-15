@@ -198,7 +198,56 @@ public class StudentsResources {
 	@Path("/update")
 	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateStudent(String incomingData)throws Exception  {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}	
+	public Response updateStudent(String incomingData)throws Exception  {
+
+		System.out.println("incomingData: " + incomingData);
+
+			String returnString = null;
+			
+			JSONArray jsonArray = new JSONArray();
+			JSONObject jsonObject = new JSONObject();
+			
+			Schema dbSchema = new Schema(); 
+			
+			try{
+
+				JSONObject studentData = new JSONObject(incomingData);
+				System.out.println("Edit student jsonData: "+studentData.toString());
+				
+				String studentName = studentData.optString("name");
+				String studentDOB = studentData.optString("dob");
+				
+				int http_code = dbSchema.editStudent(studentData.optInt("id"), studentData.optString("name"), studentData.optString("dob"));
+				
+				if( http_code == 200 ) {
+					/*
+					 * The put method allows you to add data to a JSONObject.
+					 * The first parameter is the KEY (no spaces)
+					 * The second parameter is the Value
+					 */
+					jsonObject.put("HTTP_CODE", "200");
+					jsonObject.put("MSG", "Successfully edited student: "+studentName);
+					/*
+					 * When you are dealing with JSONArrays, the put method is used to add
+					 * JSONObjects into JSONArray.
+				 	*/
+					returnString = jsonArray.put(jsonObject).toString();
+				} else {
+					return Response.status(500).entity("Unable to edit student: "+studentName).build();
+				}
+			
+				System.out.println( "returnString: " + returnString );
+			
+			} catch(Exception e) {
+				e.printStackTrace();
+				return Response.status(500).entity("Server was not able to process your request").build();
+			}
+		
+			return Response.ok(returnString).build();
+		}	
+	
+	
+	
+	
+	
 }
