@@ -1,6 +1,6 @@
 <div class="container">
     <h1>Edit Student</h1>
-
+	<div class="col-md-6">
     <form novalidate="novalidate" class="form-horizontal">
         <div class="control-group">
             <label class="control-label" for="inputName">Name:</label>
@@ -23,4 +23,12 @@
             </div>
         </div>
     </form>
+    </div>
+    <div class="col-md-6">
+    
+    	<div ng-class="{'alert-success': MSGType == 'success', 'alert-danger': MSGType == 'error'}"
+    	class="alert" role="alert" ng-show="showMSG" >
+    		{{msg}}
+    	</div>
+    </div>
 </div>

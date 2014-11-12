@@ -2,3 +2,15 @@
 	float:right;
 	display:inline;
 }
+
+.vcenter {
+    display:table !important;
+    vertical-align: middle;
+    float: none;
+    height: 100%;
+}
+.row{
+	     
+	display: flex;
+    align-items: center; 
+}

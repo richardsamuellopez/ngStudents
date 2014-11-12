@@ -78,11 +78,14 @@ controller('studentController', function($scope, $routeParams, ngStudentsAPIserv
 	
 	//Clicked Save Student
     $scope.updateStudent = function(){
-    	console.log("EDIT STUDENT");
     	ngStudentsAPIservice.editStudent($scope.student).success(function(response){
-    		console.log("EDIT STUDENT DONE");
+    		$scope.msg = "Student saved successfully!";
+    		$scope.showMSG = true;
+    		$scope.MSGType='success';
     	}).error(function(response){
-    		console.log("EDIT STUDENT ERROR");
+    		$scope.msg = "ERROR: Student not saved correctly!";
+    		$scope.showMSG = true;
+    		$scope.MSGType="error";
 	    });
     };
 		
@@ -99,6 +102,11 @@ controller('createController', function($scope, ngStudentsAPIservice, $location)
   $scope.createNewStudent = function(){
 	  var studentObj={name:$scope.student.name,dob:$scope.student.dob};
 	  ngStudentsAPIservice.addStudent($scope.student).success(function(response){
+		  
+		  $scope.msg = "Student created successfully!";
+  		  $scope.showMSG = true;
+  		  $scope.MSGType='success';
+  		
 		  if(false){
 			  //Either go to the list page 
 			  $location.path('/studentList');
@@ -109,7 +117,9 @@ controller('createController', function($scope, ngStudentsAPIservice, $location)
 			  //Add a successful creation message
 		  }
   	}).error(function(response){
-  		console.log("ADD STUDENT ERROR");
+		$scope.msg = "ERROR: Student not created correctly!";
+		$scope.showMSG = true;
+		$scope.MSGType="error";
   	});
   };
 
